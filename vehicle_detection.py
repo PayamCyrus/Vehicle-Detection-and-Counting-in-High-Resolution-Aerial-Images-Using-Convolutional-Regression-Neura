@@ -49,10 +49,10 @@ from keras.layers import Input, Dense, concatenate
 # -----------------------------------------------------------------------------
 # load data 
 
-# im = Image.open(r"C:\Users\Payam_(cyrus)\Desktop\electric\3th term\neural networks\Vehicle Detection and Counting\MunichDatasetVehicleDetection-2015-old\Train\2012-04-26-Muenchen-Tunnel_4K0G0010.jpg")  
+# im = Image.open(r"Images adresss")  
 # im.show()
 
-Image_Direct = r"C:\Users\Payam_(cyrus)\Desktop\electric\3th term\neural networks\Vehicle Detection and Counting\MunichDatasetVehicleDetection-2015-old\Train"
+Image_Direct = r"MunichDatasetVehicleDetection-2015-old\Train"
 
 files = os.listdir(Image_Direct)
 
@@ -68,7 +68,7 @@ for file in files:
       images_Name_org.append(img_path)
         
 featur_of_images=[]
-my_files_path = glob.glob(r'C:\Users\Payam_(cyrus)\Desktop\electric\3th term\neural networks\Vehicle Detection and Counting\MunichDatasetVehicleDetection-2015-old\Train\*.samp')
+my_files_path = glob.glob(r'MunichDatasetVehicleDetection-2015-old\Train\*.samp')
  
 for file in range(0,len(my_files_path)):
     
@@ -178,57 +178,6 @@ winsound.Beep(freq, duration)
 
 
 #%%============================================================================
-
-# baug of dataset The DLR 3K Munich Vehicle Aerial Image Dataset
-list_xs=[]
-for i in range(0,10):
-    for j in range(0,len(all_feature_format_row_of_array[i])):
-      ma=all_feature_format_row_of_array[i][j][2]
-      list_xs.append(ma)
-max_x=np.max(list_xs)
-print('x vehicle :',list_xs.index(np.max(list_xs)),'',max_x)
-  # print(ad)
-
-list_y=[]
-for i in range(0,10):
-    for j in range(0,len(all_feature_format_row_of_array[i])):
-      ma1=all_feature_format_row_of_array[i][j][3]
-      list_y.append(ma1)
-max_y=np.max(list_y)
-print(' y vehicle :',list_y.index(max_y),'',max_y)
-  # print(ad)
-
-
-
-
-#%% 
-# made csv file than image names and coordinates
-feature_images_for_train_0 = (all_feature_format_row_of_array[0])[:,2:4]
-
-feature_images_for_train_0[:,:-1]=images_Name_org[0]
-
-
-name_and_featur=[]
-for i in range(0,len(images_Name_org)):
-    # name_and_featur.append(top_Name,top_center_x,top_center_y)
-
-    for j in range(0,len(all_feature_format_row_of_array[i])):
-        # top_Name.append(name)
-        name_and_featur.append([images_Name_org[i],(((all_feature_format_row_of_array[i])[:,2:4][j][0])),\
-                                ((all_feature_format_row_of_array[i])[:,2:4][j][1])])
-        # top_center_y.append(((all_feature_format_row_of_array[0])[:,2:4][j][1]))
-name_and_featur.insert(0,['Name of Image','center x','center y'])
-    
-
-with open('Name_and_coordinates_of_images.csv', 'w', newline='') as file:
-     writer = csv.writer(file)
-     writer.writerows(name_and_featur)
-
-
-read_csv=pd.read_csv(r"C:\Users\Payam_(cyrus)\Desktop\electric\3th term\neural networks\Vehicle Detection and Counting\poroject_vehicle_detection\Name_and_coordinates_of_images.csv", 
-                          )
-
-
 
 
 # %%
@@ -372,31 +321,4 @@ trainig_run = my_model.fit(train, train_label, batch_size=batch_size,
                                     epochs=epochs,verbose=1,validation_data=(testtt, testtt_label))
 
 
-# %%
-im = Image.open(r"C:\Users\Payam_(cyrus)\Desktop\electric\3th term\neural networks\Vehicle Detection and Counting\MunichDatasetVehicleDetection-2015-old\Test\2012-04-26-Muenchen-Tunnel_4K0G0110.jpg")
-new_width  = 224
-new_height = 224
-im = im.resize((new_width, new_height), Image.ANTIALIAS)
-# im=np.array(im)
-# im = im.astype('float32')
-# im /= 255
-
-img_array = tf.keras.utils.img_to_array(im)
-# img_array = tf.expand_dims(img_array, 0)
-
-yhat = my_model.predict(img_array)
-
-plt.figure()
-plt.imshow(yhat)
-plt.colorbar()
-
-cv2.imshow('image', yhat)
-
-img=Image.fromarray(yhat*255)
-img.show()
-
-# for i in encoded_imgs:
-from matplotlib import cm
-im2 = Image.fromarray(np.uint8(cm.gist_earth(yhat)*255))
-im2.show()
 
